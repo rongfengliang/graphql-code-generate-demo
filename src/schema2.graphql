@@ -1,0 +1,1910 @@
+type AccessLog {
+  # The ID of the log entry.
+  log_id: Int
+
+  # Username of the user in this log entry.
+  username: String
+
+  # Name of the repository in this log entry.
+  repo_name: String
+
+  # Tag of the repository in this log entry.
+  repo_tag: String
+
+  # The operation against the repository in this log entry.
+  operation: String
+
+  # The time when this operation is triggered.
+  op_time: String
+}
+
+type BoolConfigItem {
+  # The boolean value of current config item
+  value: Boolean
+
+  # The configure item can be updated or not
+  editable: Boolean
+}
+
+type ComponentOverviewEntry {
+  # 1-None/Negligible, 2-Unknown, 3-Low, 4-Medium, 5-High
+  severity: Int
+
+  # number of the components with certain severity.
+  count: Int
+}
+
+input ConfigurationsInput {
+  # The auth mode of current system, such as "db_auth", "ldap_auth"
+  auth_mode: String
+
+  # The sender name for Email notification.
+  email_from: String
+
+  # The hostname of SMTP server that sends Email notification.
+  email_host: String
+
+  # The port of SMTP server.
+  email_port: Int
+
+  # By default it's empty so the email_username is picked.
+  email_identity: String
+
+  # The username for authenticate against SMTP server.
+  email_username: String
+
+  # When it's set to true the system will access Email server via TLS by default. 
+  # If it's set to false, it still will handle "STARTTLS" from server side.
+  email_ssl: Boolean
+
+  # Whether or not the certificate will be verified when Harbor tries to access the email server.
+  email_insecure: Boolean
+
+  # The URL of LDAP server.
+  ldap_url: String
+
+  # The Base DN for LDAP binding.
+  ldap_base_dn: String
+
+  # The filter for LDAP binding.
+  ldap_filter: String
+
+  # 0-LDAP_SCOPE_BASE, 1-LDAP_SCOPE_ONELEVEL, 2-LDAP_SCOPE_SUBTREE
+  ldap_scope: Int
+
+  # The attribute which is used as identity for the LDAP binding, such as "CN" or "SAMAccountname"
+  ldap_uid: String
+
+  # The DN of the user to do the search.
+  ldap_search_dn: String
+
+  # timeout in seconds for connection to LDAP server.
+  ldap_timeout: Int
+
+  # The attribute which is used as identity of the LDAP group, default is cn.
+  ldap_group_attribute_name: String
+
+  # The base DN to search LDAP group.
+  ldap_group_base_dn: String
+
+  # The filter to search the ldap group.
+  ldap_group_search_filter: String
+
+  # The scope to search ldap. '0-LDAP_SCOPE_BASE, 1-LDAP_SCOPE_ONELEVEL, 2-LDAP_SCOPE_SUBTREE'
+  ldap_group_search_scope: Int
+
+  # Specify the ldap group which have the same privilege with Harbor admin.
+  ldap_group_admin_dn: String
+
+  # This attribute restricts what users have the permission to create project.  It can be "everyone" or "adminonly".
+  project_creation_restriction: String
+
+  # 'docker push' is prohibited by Harbor if you set it to true.   
+  read_only: Boolean
+
+  # Whether the Harbor instance supports self-registration.  If it's set to false, admin need to add user to the instance.
+  self_registration: Boolean
+
+  # The expiration time of the token for internal Registry, in minutes.
+  token_expiration: Int
+
+  # Whether or not the certificate will be verified when Harbor tries to access a remote Harbor instance for replication.
+  verify_remote_cert: Boolean
+  scan_all_policy: ConfigurationsInput_scan_all_policyInput
+}
+
+input ConfigurationsInput_scan_all_policyInput {
+  # The type of scan all policy, currently the valid values are "none" and "daily"
+  type: String
+
+  # The parameters of the policy, the values are dependant on the type of the policy.
+  parameter: ConfigurationsInput_scan_all_policyInput_parameterInput
+}
+
+# The parameters of the policy, the values are dependant on the type of the policy.
+input ConfigurationsInput_scan_all_policyInput_parameterInput {
+  # The offest in seconds of UTC 0 o'clock, only valid when the policy type is "daily"
+  daily_time: Int
+}
+
+type ConfigurationsResponse {
+  # The auth mode of current system, such as "db_auth", "ldap_auth"
+  auth_mode: StringConfigItem
+
+  # The sender name for Email notification.
+  email_from: StringConfigItem
+
+  # The hostname of SMTP server that sends Email notification.
+  email_host: StringConfigItem
+
+  # The port of SMTP server.
+  email_port: IntegerConfigItem
+
+  # By default it's empty so the email_username is picked.
+  email_identity: StringConfigItem
+
+  # The username for authenticate against SMTP server.
+  email_username: StringConfigItem
+
+  # When it's set to true the system will access Email server via TLS by default. 
+  # If it's set to false, it still will handle "STARTTLS" from server side.
+  email_ssl: BoolConfigItem
+
+  # Whether or not the certificate will be verified when Harbor tries to access the email server.
+  email_insecure: BoolConfigItem
+
+  # The URL of LDAP server.
+  ldap_url: StringConfigItem
+
+  # The Base DN for LDAP binding.
+  ldap_base_dn: StringConfigItem
+
+  # The filter for LDAP binding.
+  ldap_filter: StringConfigItem
+
+  # 0-LDAP_SCOPE_BASE, 1-LDAP_SCOPE_ONELEVEL, 2-LDAP_SCOPE_SUBTREE
+  ldap_scope: Int
+
+  # The attribute which is used as identity for the LDAP binding, such as "CN" or "SAMAccountname"
+  ldap_uid: StringConfigItem
+
+  # The DN of the user to do the search.
+  ldap_search_dn: String
+
+  # timeout in seconds for connection to LDAP server.
+  ldap_timeout: IntegerConfigItem
+
+  # The attribute which is used as identity of the LDAP group, default is cn.
+  ldap_group_attribute_name: StringConfigItem
+
+  # The base DN to search LDAP group.
+  ldap_group_base_dn: StringConfigItem
+
+  # The filter to search the ldap group.
+  ldap_group_search_filter: StringConfigItem
+
+  # The scope to search ldap. '0-LDAP_SCOPE_BASE, 1-LDAP_SCOPE_ONELEVEL, 2-LDAP_SCOPE_SUBTREE'
+  ldap_group_search_scope: IntegerConfigItem
+
+  # Specify the ldap group which have the same privilege with Harbor admin.
+  ldap_group_admin_dn: StringConfigItem
+
+  # This attribute restricts what users have the permission to create project.  It can be "everyone" or "adminonly".
+  project_creation_restriction: StringConfigItem
+
+  # 'docker push' is prohibited by Harbor if you set it to true.   
+  read_only: BoolConfigItem
+
+  # Whether the Harbor instance supports self-registration.  If it's set to false, admin need to add user to the instance.
+  self_registration: BoolConfigItem
+
+  # The expiration time of the token for internal Registry, in minutes.
+  token_expiration: IntegerConfigItem
+
+  # Whether or not the certificate will be verified when Harbor tries to access a remote Harbor instance for replication.
+  verify_remote_cert: BoolConfigItem
+  scan_all_policy: ConfigurationsResponse_scan_all_policy
+}
+
+type ConfigurationsResponse_scan_all_policy {
+  # The type of scan all policy, currently the valid values are "none" and "daily"
+  type: String
+
+  # The parameters of the policy, the values are dependant on the type of the policy.
+  parameter: ConfigurationsResponse_scan_all_policy_parameter
+}
+
+# The parameters of the policy, the values are dependant on the type of the policy.
+type ConfigurationsResponse_scan_all_policy_parameter {
+  # The offest in seconds of UTC 0 o'clock, only valid when the policy type is "daily"
+  daily_time: Int
+}
+
+type delete_chartrepo_repo_charts_name_version {
+  # default field
+  empty: String
+}
+
+type delete_jobs_replication_id {
+  # default field
+  empty: String
+}
+
+type delete_labels_id {
+  # default field
+  empty: String
+}
+
+type delete_projects_project_id {
+  # default field
+  empty: String
+}
+
+type delete_projects_project_id_members_mid {
+  # default field
+  empty: String
+}
+
+type delete_projects_project_id_metadatas_meta_name {
+  # default field
+  empty: String
+}
+
+type delete_repositories_repo_name {
+  # default field
+  empty: String
+}
+
+type delete_repositories_repo_name_labels_label_id {
+  # default field
+  empty: String
+}
+
+type delete_repositories_repo_name_tags_tag {
+  # default field
+  empty: String
+}
+
+type delete_repositories_repo_name_tags_tag_labels_label_id {
+  # default field
+  empty: String
+}
+
+type delete_targets_id {
+  # default field
+  empty: String
+}
+
+type delete_usergroups_group_id {
+  # default field
+  empty: String
+}
+
+type delete_users_user_id {
+  # default field
+  empty: String
+}
+
+type DetailedTag {
+  # The digest of the tag.
+  digest: String
+
+  # The name of the tag.
+  name: String
+
+  # The size of the image.
+  size: Int
+
+  # The architecture of the image.
+  architecture: String
+
+  # The os of the image.
+  os: String
+
+  # The version of docker which builds the image.
+  docker_version: String
+
+  # The author of the image.
+  author: String
+
+  # The build time of the image.
+  created: String
+
+  # The signature of image, defined by RepoSignature. If it is null, the image is unsigned.
+  signature: DetailedTag_signature
+
+  # The overview of the scan result.  This is an optional property.
+  scan_overview: DetailedTag_scan_overview
+
+  # The label list.
+  labels: [Label]
+}
+
+# The overview of the scan result.  This is an optional property.
+type DetailedTag_scan_overview {
+  # The digest of the image.
+  digest: String
+
+  # The status of the scan job, it can be "pendnig", "running", "finished", "error".
+  scan_status: String
+
+  # The ID of the job on jobservice to scan the image.
+  job_id: Int
+
+  # 0-Not scanned, 1-Negligible, 2-Unknown, 3-Low, 4-Medium, 5-High
+  severity: Int
+
+  # The top layer name of this image in Clair, this is for calling Clair API to get the vulnerability list of this image.
+  details_key: String
+
+  # The components overview of the image.
+  components: DetailedTag_scan_overview_components
+}
+
+# The components overview of the image.
+type DetailedTag_scan_overview_components {
+  # Total number of the components in this image.
+  total: Int
+
+  # List of number of components of different severities.
+  summary: [ComponentOverviewEntry]
+}
+
+# The signature of image, defined by RepoSignature. If it is null, the image is unsigned.
+type DetailedTag_signature {
+  # default field
+  empty: String
+}
+
+input EmailServerSettingInput {
+  # The host of email server.
+  email_host: String
+
+  # The port of email server.
+  email_port: Int
+
+  # The username of email server.
+  email_username: String
+
+  # The password of email server.
+  email_password: String
+
+  # Use ssl/tls or not.
+  email_ssl: Boolean
+
+  # The dentity of email server.
+  email_identity: String
+}
+
+type GCResult {
+  # the result of gc job.
+  status: Boolean
+
+  # the details of gc job.
+  msg: String
+
+  # the start time of gc job.
+  starttime: String
+
+  # the end time of gc job.
+  endtime: String
+}
+
+type GCSchedule {
+  # The schedule type. The valid values are daily， weekly and None. 'None' means to cancel the schedule.
+  type: String
+
+  # Optional, only used when the type is weekly. The valid values are 1-7.
+  weekday: Int
+
+  # The time offset with the UTC 00:00 in seconds.
+  offtime: String
+}
+
+input GCScheduleInput {
+  # The schedule type. The valid values are daily， weekly and None. 'None' means to cancel the schedule.
+  type: String
+
+  # Optional, only used when the type is weekly. The valid values are 1-7.
+  weekday: Int
+
+  # The time offset with the UTC 00:00 in seconds.
+  offtime: String
+}
+
+type GeneralInfo {
+  # If the Harbor instance is deployed with nested notary.
+  with_notary: Boolean
+
+  # If the Harbor instance is deployed with nested clair.
+  with_clair: Boolean
+
+  # If the Harbor instance is deployed with Admiral.
+  with_admiral: Boolean
+
+  # The url of the endpoint of admiral instance.
+  admiral_endpoint: String
+
+  # The auth mode of current Harbor instance.
+  auth_mode: String
+
+  # Indicate who can create projects, it could be 'adminonly' or 'everyone'.
+  project_creation_restriction: String
+
+  # Indicate whether the Harbor instance enable user to register himself.
+  self_registration: Boolean
+
+  # Indicate whether there is a ca root cert file ready for download in the file system.
+  has_ca_root: Boolean
+
+  # The build version of Harbor.
+  harbor_version: String
+
+  # The UTC time in milliseconds, after which user can call scanAll API to scan all images.
+  next_scan_all: Int
+
+  # The status of vulnerability data of Clair.
+  clair_vulnerability_status: GeneralInfo_clair_vulnerability_status
+}
+
+# The status of vulnerability data of Clair.
+type GeneralInfo_clair_vulnerability_status {
+  # The UTC timestamp in milliseconds of last successful update for Clair
+  # vulnerability data, when all the updaters are successfully executed.
+  overall_last_update: Int
+
+  # Detail timestamp of different namespace.  This is introduced to handle the
+  # case when some updaters are executed successfully and some not.
+  details: [VulnNamespaceTimestamp]
+}
+
+type get_chartrepo_health {
+  healthy: Boolean
+}
+
+type get_chartrepo_repo_charts {
+  # default field
+  empty: String
+}
+
+type get_chartrepo_repo_charts_name {
+  # default field
+  empty: String
+}
+
+type get_chartrepo_repo_charts_name_version {
+  # default field
+  empty: String
+}
+
+type get_jobs_replication_id_log {
+  # default field
+  empty: String
+}
+
+type get_jobs_scan_id_log {
+  # default field
+  empty: String
+}
+
+type get_system_gc_id_log {
+  # default field
+  empty: String
+}
+
+type get_systeminfo_getcert {
+  # default field
+  empty: String
+}
+
+type get_users_user_id {
+  # default field
+  empty: String
+}
+
+input HasAdminRoleInput {
+  # 1-has admin, 0-not.
+  has_admin_role: Int
+}
+
+type head_projects {
+  # default field
+  empty: String
+}
+
+type IntegerConfigItem {
+  # The integer value of current config item
+  value: Int
+
+  # The configure item can be updated or not
+  editable: Boolean
+}
+
+type JobStatus {
+  # The job ID.
+  id: String
+
+  # The status of the job.
+  status: String
+
+  # The repository handled by the job.
+  repository: String
+
+  # The ID of the policy that triggered this job.
+  policy_id: String
+
+  # The operation of the job.
+  operation: String
+
+  # The repository's used tag list.
+  tags: [Tags]
+
+  # The creation time of the job.
+  creation_time: String
+
+  # The update time of the job.
+  update_time: String
+}
+
+type Label {
+  # The ID of label.
+  id: Int
+
+  # The name of label.
+  name: String
+
+  # The description of label.
+  description: String
+
+  # The color of label.
+  color: String
+
+  # The scope of label, g for global labels and p for project labels.
+  scope: String
+
+  # The project ID if the label is a project label.
+  project_id: Int
+
+  # The creation time of label.
+  creation_time: String
+
+  # The update time of label.
+  update_time: String
+
+  # The label is deleted or not.
+  deleted: Boolean
+}
+
+input LabelInput {
+  # The ID of label.
+  id: Int
+
+  # The name of label.
+  name: String
+
+  # The description of label.
+  description: String
+
+  # The color of label.
+  color: String
+
+  # The scope of label, g for global labels and p for project labels.
+  scope: String
+
+  # The project ID if the label is a project label.
+  project_id: Int
+
+  # The creation time of label.
+  creation_time: String
+
+  # The update time of label.
+  update_time: String
+
+  # The label is deleted or not.
+  deleted: Boolean
+}
+
+input LdapConfInput {
+  # The url of ldap service.
+  ldap_url: String
+
+  # The search dn of ldap service.
+  ldap_search_dn: String
+
+  # The search password of ldap service.
+  ldap_search_password: String
+
+  # The base dn of ldap service.
+  ldap_base_dn: String
+
+  # The serach filter of ldap service.
+  ldap_filter: String
+
+  # The serach uid from ldap service attributes.
+  ldap_uid: String
+
+  # The serach scope of ldap service.
+  ldap_scope: String
+
+  # The connect timeout of ldap service(second).
+  ldap_connection_timeout: String
+}
+
+input LdapImportUsersInput {
+  # selected uid list
+  ldap_uid_list: [String]
+}
+
+type LdapUsers {
+  # search ldap user name based on ldapconf.
+  ldap_username: String
+
+  # system will try to guess the user realname form "uid" or "cn" attribute.
+  ldap_realname: String
+
+  # system will try to guess the user email address form "mail" or "email" attribute.
+  ldap_email: String
+}
+
+type Manifest {
+  # The detail of manifest.
+  manifest: Manifest_manifest
+
+  # The config of the repository.
+  config: String
+}
+
+# The detail of manifest.
+type Manifest_manifest {
+  # default field
+  empty: String
+}
+
+type Mutation {
+  # This endpoint is for user to create a new project.
+  #
+  post_projects(project: ProjectReqInput!): post_projects
+
+  # This endpoint is aimed to update the properties of a project.
+  #
+  put_projects_project_id(project_id: String!, project: ProjectReqInput!): put_projects_project_id
+
+  # This endpoint is aimed to delete project by project ID.
+  #
+  delete_projects_project_id(project_id: String!): delete_projects_project_id
+
+  # This endpoint is aimed to add metadata of a project.
+  #
+  post_projects_project_id_metadatas(project_id: String!, metadata: ProjectMetadataInput!): post_projects_project_id_metadatas
+
+  # This endpoint is aimed to update the metadata of a project.
+  #
+  put_projects_project_id_metadatas_meta_name(project_id: String!, meta_name: String!): put_projects_project_id_metadatas_meta_name
+
+  # This endpoint is aimed to delete metadata of a project.
+  #
+  delete_projects_project_id_metadatas_meta_name(project_id: String!, meta_name: String!): delete_projects_project_id_metadatas_meta_name
+
+  # Create project member relationship, the member can be one of the user_member
+  # and group_member,  The user_member need to specify user_id or username. If the
+  # user already exist in harbor DB, specify the user_id,  If does not exist in
+  # harbor DB, it will SearchAndOnBoard the user. The group_member need to specify
+  # id or ldap_group_dn. If the group already exist in harbor DB. specify the user
+  # group's id,  If does not exist, it will SearchAndOnBoard the group. 
+  post_projects_project_id_members(project_id: String!, project_member: ProjectMemberInput): post_projects_project_id_members
+
+  # Update project member relationship
+  put_projects_project_id_members_mid(project_id: String!, mid: String!, role: RoleRequestInput): put_projects_project_id_members_mid
+  delete_projects_project_id_members_mid(project_id: String!, mid: String!): delete_projects_project_id_members_mid
+
+  # This endpoint is to create a user if the user does not already exist.
+  #
+  post_users(user: UserInput!): post_users
+
+  # This endpoint let a registered user change his profile.
+  #
+  put_users_user_id(user_id: Int!, profile: UserProfileInput!): put_users_user_id
+
+  # This endpoint let administrator of Harbor mark a registered user as
+  # be removed.It actually won't be deleted from DB.
+  #
+  delete_users_user_id(user_id: Int!): delete_users_user_id
+
+  # This endpoint is for user to update password. Users with the admin role can
+  # change any user's password. Guest users can change only their own password.
+  #
+  put_users_user_id_password(user_id: Int!, password: PasswordInput!): put_users_user_id_password
+
+  # This endpoint let a registered user change to be an administrator
+  # of Harbor.
+  #
+  put_users_user_id_sysadmin(user_id: Int!, has_admin_role: HasAdminRoleInput!): put_users_user_id_sysadmin
+
+  # This endpoint let user delete a repository with name.
+  #
+  delete_repositories_repo_name(repo_name: String!): delete_repositories_repo_name
+
+  # This endpoint is used to update description of the repository.
+  #
+  put_repositories_repo_name(repo_name: String!, description: RepositoryDescriptionInput!): put_repositories_repo_name
+
+  # Add a label to the repository.
+  #
+  post_repositories_repo_name_labels(repo_name: String!, label: LabelInput!): post_repositories_repo_name_labels
+
+  # Delete the label from the repository specified by the repo_name.
+  #
+  delete_repositories_repo_name_labels_label_id(repo_name: String!, label_id: Int!): delete_repositories_repo_name_labels_label_id
+
+  # This endpoint let user delete tags with repo name and tag.
+  #
+  delete_repositories_repo_name_tags_tag(repo_name: String!, tag: String!): delete_repositories_repo_name_tags_tag
+
+  # Add a label to the image.
+  #
+  post_repositories_repo_name_tags_tag_labels(repo_name: String!, tag: String!, label: LabelInput!): post_repositories_repo_name_tags_tag_labels
+
+  # Delete the label from the image specified by the repo_name and tag.
+  #
+  delete_repositories_repo_name_tags_tag_labels_label_id(repo_name: String!, tag: String!, label_id: Int!): delete_repositories_repo_name_tags_tag_labels_label_id
+
+  # Trigger jobservice to call Clair API to scan the image identified by the
+  # repo_name and tag.  Only project admins have permission to scan images under the project.
+  #
+  post_repositories_repo_name_tags_tag_scan(repo_name: String!, tag: String!): post_repositories_repo_name_tags_tag_scan
+
+  # The server will launch different jobs to scan each image on the regsitry, so
+  # this is equivalent to calling  the API to scan the image one by one in
+  # background, so there's no way to track the overall status of the "scan all"
+  # action.  Only system adim has permission to call this API.  
+  #
+  post_repositories_scanAll(project_id: Int): post_repositories_scanAll
+
+  # The endpoint is used to stop the replication jobs of a policy.
+  #
+  put_jobs_replication(policyinfo: UpdateJobsInput!): put_jobs_replication
+
+  # This endpoint is aimed to remove specific ID job from jobservice.
+  #
+  delete_jobs_replication_id(id: String!): delete_jobs_replication_id
+
+  # This endpoint let user creates a policy, and if it is enabled, the replication will be triggered right now.
+  #
+  post_policies_replication(policyinfo: RepPolicyInput!): post_policies_replication
+
+  # This endpoint let user update policy name, description, target and enablement.
+  #
+  put_policies_replication_id(id: String!, policyupdate: RepPolicyInput!): put_policies_replication_id
+
+  # This endpoint let user creates a label.
+  #
+  post_labels(label: LabelInput!): post_labels
+
+  # This endpoint let user update label properties.
+  #
+  put_labels_id(id: String!, label: LabelInput!): put_labels_id
+
+  # Delete the label specified by ID.
+  #
+  delete_labels_id(id: String!): delete_labels_id
+
+  # This endpoint is used to trigger a replication.
+  #
+  post_replications(policy_ID: ReplicationInput!): post_replications
+
+  # This endpoint is for user to create a new replication target.
+  #
+  post_targets(reptarget: RepTargetPostInput!): post_targets
+
+  # This endpoint is for ping validates whether the target is reachable and whether the credential is valid.
+  #
+  post_targets_ping(target: PingTargetInput!): post_targets_ping
+
+  # This endpoint is for update specific replication's target.
+  #
+  put_targets_id(id: String!, repo_target: PutTargetInput!): put_targets_id
+
+  # This endpoint is for to delete specific replication's target.
+  #
+  delete_targets_id(id: String!): delete_targets_id
+
+  # This endpoint is for syncing all repositories of registry with database. 
+  #
+  post_internal_syncregistry: post_internal_syncregistry
+
+  # This endpoint ping the available ldap service for test related configuration parameters. 
+  #
+  post_ldap_ping(ldapconf: LdapConfInput): post_ldap_ping
+
+  # This endpoint adds the selected available ldap users to harbor based on
+  # related configuration parameters from the system. System will try to guess the
+  # user email address and realname, add to harbor user information. 
+  # If have errors when import user, will return the list of importing failed uid and the failed reason.
+  #
+  post_ldap_users_import(uid_list: LdapImportUsersInput!): post_ldap_users_import
+
+  # Create user group information
+  post_usergroups(usergroup: UserGroupInput): post_usergroups
+
+  # Update user group information
+  put_usergroups_group_id(group_id: String!, usergroup: UserGroupInput): put_usergroups_group_id
+
+  # Delete user group
+  delete_usergroups_group_id(group_id: Int!): delete_usergroups_group_id
+
+  # This endpoint is for update gc schedule.
+  #
+  put_system_gc_schedule(schedule: GCScheduleInput!): put_system_gc_schedule
+
+  # This endpoint is for update gc schedule.
+  #
+  post_system_gc_schedule(schedule: GCScheduleInput!): post_system_gc_schedule
+
+  # This endpoint is for modifying system configurations that only provides for admin user.
+  #
+  put_configurations(configurations: ConfigurationsInput!): put_configurations
+
+  # Reset system configurations from environment variables. Can only be accessed by admin user.
+  #
+  post_configurations_reset: post_configurations_reset
+
+  # Test connection and authentication with email server. 
+  #
+  post_email_ping(settings: EmailServerSettingInput): post_email_ping
+
+  # Delete the specified chart version
+  delete_chartrepo_repo_charts_name_version(repo: String!, name: String!, version: String!): delete_chartrepo_repo_charts_name_version
+}
+
+input PasswordInput {
+  # The user's existing password.
+  old_password: String
+
+  # New password for marking as to be updated.
+  new_password: String
+}
+
+input PingTargetInput {
+  # Target ID.
+  id: Int
+
+  # The target address URL string.
+  endpoint: String
+
+  # The target server username.
+  username: String
+
+  # The target server password.
+  password: String
+
+  # Whether or not the certificate will be verified when Harbor tries to access the server.
+  insecure: Boolean
+}
+
+type post_configurations_reset {
+  # default field
+  empty: String
+}
+
+type post_email_ping {
+  # default field
+  empty: String
+}
+
+type post_internal_syncregistry {
+  # default field
+  empty: String
+}
+
+type post_labels {
+  # default field
+  empty: String
+}
+
+type post_ldap_ping {
+  # default field
+  empty: String
+}
+
+type post_ldap_users_import {
+  # default field
+  empty: String
+}
+
+type post_policies_replication {
+  # default field
+  empty: String
+}
+
+type post_projects {
+  # default field
+  empty: String
+}
+
+type post_projects_project_id_members {
+  # default field
+  empty: String
+}
+
+type post_projects_project_id_metadatas {
+  # default field
+  empty: String
+}
+
+type post_replications {
+  # default field
+  empty: String
+}
+
+type post_repositories_repo_name_labels {
+  # default field
+  empty: String
+}
+
+type post_repositories_repo_name_tags_tag_labels {
+  # default field
+  empty: String
+}
+
+type post_repositories_repo_name_tags_tag_scan {
+  # default field
+  empty: String
+}
+
+type post_repositories_scanAll {
+  # default field
+  empty: String
+}
+
+type post_system_gc_schedule {
+  # default field
+  empty: String
+}
+
+type post_targets {
+  # default field
+  empty: String
+}
+
+type post_targets_ping {
+  # default field
+  empty: String
+}
+
+type post_usergroups {
+  # default field
+  empty: String
+}
+
+type post_users {
+  # default field
+  empty: String
+}
+
+type Project {
+  # Project ID
+  project_id: Int
+
+  # The owner ID of the project always means the creator of the project.
+  owner_id: Int
+
+  # The name of the project.
+  name: String
+
+  # The creation time of the project.
+  creation_time: String
+
+  # The update time of the project.
+  update_time: String
+
+  # A deletion mark of the project.
+  deleted: Boolean
+
+  # The owner name of the project.
+  owner_name: String
+
+  # Correspond to the UI about whether the project's publicity is  updatable (for UI)
+  togglable: Boolean
+
+  # The role ID of the current user who triggered the API (for UI)
+  current_user_role_id: Int
+
+  # The number of the repositories under this project.
+  repo_count: Int
+
+  # The metadata of the project.
+  metadata: ProjectMetadata
+}
+
+input ProjectInput {
+  # Project ID
+  project_id: Int
+
+  # The owner ID of the project always means the creator of the project.
+  owner_id: Int
+
+  # The name of the project.
+  name: String
+
+  # The creation time of the project.
+  creation_time: String
+
+  # The update time of the project.
+  update_time: String
+
+  # A deletion mark of the project.
+  deleted: Boolean
+
+  # The owner name of the project.
+  owner_name: String
+
+  # Correspond to the UI about whether the project's publicity is  updatable (for UI)
+  togglable: Boolean
+
+  # The role ID of the current user who triggered the API (for UI)
+  current_user_role_id: Int
+
+  # The number of the repositories under this project.
+  repo_count: Int
+
+  # The metadata of the project.
+  metadata: ProjectMetadataInput
+}
+
+type ProjectMemberEntity {
+  # the project member id
+  id: Int
+
+  # the project id
+  project_id: Int
+
+  # the name of the group member.
+  entity_name: String
+
+  # the name of the role
+  role_name: String
+
+  # the role id
+  role_id: Int
+
+  # the id of entity, if the member is an user, it is user_id in user table. if
+  # the member is an user group, it is the user group's ID in user_group table.
+  entity_id: Int
+
+  # the entity's type, u for user entity, g for group entity.
+  entity_type: String
+}
+
+input ProjectMemberInput {
+  # The role id 1 for projectAdmin, 2 for developer, 3 for guest
+  role_id: Int
+  member_user: UserEntityInput
+  member_group: UserGroupInput
+}
+
+type ProjectMetadata {
+  # The public status of the project. The valid values are "true", "false".
+  public: String
+
+  # Whether content trust is enabled or not. If it is enabled, user cann't pull
+  # unsigned images from this project. The valid values are "true", "false".
+  enable_content_trust: String
+
+  # Whether prevent the vulnerable images from running. The valid values are "true", "false".
+  prevent_vulnerable_images_from_running: String
+
+  # If the vulnerability is high than severity defined here, the images cann't be
+  # pulled. The valid values are "negligible", "low", "medium", "high", "critical".
+  prevent_vulnerable_images_from_running_severity: String
+
+  # Whether scan images automatically when pushing. The valid values are "true", "false".
+  automatically_scan_images_on_push: String
+}
+
+input ProjectMetadataInput {
+  # The public status of the project. The valid values are "true", "false".
+  public: String
+
+  # Whether content trust is enabled or not. If it is enabled, user cann't pull
+  # unsigned images from this project. The valid values are "true", "false".
+  enable_content_trust: String
+
+  # Whether prevent the vulnerable images from running. The valid values are "true", "false".
+  prevent_vulnerable_images_from_running: String
+
+  # If the vulnerability is high than severity defined here, the images cann't be
+  # pulled. The valid values are "negligible", "low", "medium", "high", "critical".
+  prevent_vulnerable_images_from_running_severity: String
+
+  # Whether scan images automatically when pushing. The valid values are "true", "false".
+  automatically_scan_images_on_push: String
+}
+
+input ProjectReqInput {
+  # The name of the project.
+  project_name: String
+
+  # The metadata of the project.
+  metadata: ProjectMetadataInput
+}
+
+type put_configurations {
+  # default field
+  empty: String
+}
+
+type put_jobs_replication {
+  # default field
+  empty: String
+}
+
+type put_labels_id {
+  # default field
+  empty: String
+}
+
+type put_policies_replication_id {
+  # default field
+  empty: String
+}
+
+type put_projects_project_id {
+  # default field
+  empty: String
+}
+
+type put_projects_project_id_members_mid {
+  # default field
+  empty: String
+}
+
+type put_projects_project_id_metadatas_meta_name {
+  # default field
+  empty: String
+}
+
+type put_repositories_repo_name {
+  # default field
+  empty: String
+}
+
+type put_system_gc_schedule {
+  # default field
+  empty: String
+}
+
+type put_targets_id {
+  # default field
+  empty: String
+}
+
+type put_usergroups_group_id {
+  # default field
+  empty: String
+}
+
+type put_users_user_id {
+  # default field
+  empty: String
+}
+
+type put_users_user_id_password {
+  # default field
+  empty: String
+}
+
+type put_users_user_id_sysadmin {
+  # default field
+  empty: String
+}
+
+input PutTargetInput {
+  # The target name.
+  name: String
+
+  # The target address URL string.
+  endpoint: String
+
+  # The target server username.
+  username: String
+
+  # The target server password.
+  password: String
+
+  # Whether or not the certificate will be verified when Harbor tries to access the server.
+  insecure: Boolean
+}
+
+type Query {
+  # The Search endpoint returns information about the projects and repositories
+  # offered at public status or related to the current logged in user. The
+  # response includes the project and repository list in a proper
+  # display order.
+  #
+  get_search(q: String!): [Search]
+
+  # This endpoint returns all projects created by Harbor, and can be filtered by project name.
+  #
+  get_projects(name: String, public: Boolean, owner: String, page: Int, page_size: Int): [Project]
+
+  # This endpoint is used to check if the project name user provided already exist.
+  #
+  head_projects(project_name: String!): head_projects
+
+  # This endpoint returns specific project information by project ID.
+  #
+  get_projects_project_id(project_id: String!): Project
+
+  # This endpoint let user search access logs filtered by operations and date time ranges.
+  #
+  get_projects_project_id_logs(project_id: String!, username: String, repository: String, tag: String, operation: String, begin_timestamp: String, end_timestamp: String, page: Int, page_size: Int): [AccessLog]
+
+  # This endpoint returns metadata of the project specified by project ID.
+  #
+  get_projects_project_id_metadatas(project_id: String!): ProjectMetadata
+
+  # This endpoint returns specified metadata of a project.
+  #
+  get_projects_project_id_metadatas_meta_name(project_id: String!, meta_name: String!): ProjectMetadata
+
+  # Get all project member information
+  get_projects_project_id_members(project_id: String!, entityname: String): [ProjectMemberEntity]
+
+  # Get the project member information
+  get_projects_project_id_members_mid(project_id: String!, mid: String!): ProjectMemberEntity
+
+  # This endpoint is aimed to statistic all of the projects number and
+  # repositories number relevant to the logined user, also the public projects
+  # number and repositories number. If the user is admin, he can also get total
+  # projects number and total repositories number.
+  #
+  get_statistics: StatisticMap
+
+  # This endpoint is for user to search registered users, support for filtering
+  # results with username.Notice, by now this operation is only for administrator.
+  #
+  get_users(username: String, email: String, page: Int, page_size: Int): [User]
+
+  # This endpoint is to get the current user infomation.
+  #
+  get_users_current: User
+
+  # Get user's profile with user id.
+  #
+  get_users_user_id(user_id: Int!): get_users_user_id
+
+  # This endpoint let user search repositories accompanying with relevant project ID and repo name.
+  #
+  get_repositories(project_id: Int!, q: String, label_id: Int, page: Int, page_size: Int): [Repository]
+
+  # Get labels of a repository specified by the repo_name.
+  #
+  get_repositories_repo_name_labels(repo_name: String!): [Label]
+
+  # This endpoint aims to retrieve the tag of the repository. If deployed with
+  # Notary, the signature property of response represents whether the image is
+  # singed or not. If the property is null, the image is unsigned.
+  #
+  get_repositories_repo_name_tags_tag(repo_name: String!, tag: String!): DetailedTag
+
+  # This endpoint aims to retrieve tags from a relevant repository. If deployed
+  # with Notary, the signature property of response represents whether the image
+  # is singed or not. If the property is null, the image is unsigned.
+  #
+  get_repositories_repo_name_tags(repo_name: String!, label_ids: String): [DetailedTag]
+
+  # Get labels of an image specified by the repo_name and tag.
+  #
+  get_repositories_repo_name_tags_tag_labels(repo_name: String!, tag: String!): [Label]
+
+  # This endpoint aims to retreive manifests from a relevant repository.
+  #
+  get_repositories_repo_name_tags_tag_manifest(repo_name: String!, tag: String!, version: String): Manifest
+
+  # Call Clair API to get the vulnerability based on the previous successful scan.
+  #
+  get_repositories_repo_name_tags_tag_vulnerability_details(repo_name: String!, tag: String!): [VulnerabilityItem]
+
+  # This endpoint aims to retrieve signature information of a repository, the data is
+  # from the nested notary instance of Harbor.
+  # If the repository does not have any signature information in notary, this API will
+  # return an empty list with response code 200, instead of 404
+  #
+  get_repositories_repo_name_signatures(repo_name: String!): [RepoSignature]
+
+  # This endpoint aims to let users see the most popular public repositories
+  #
+  get_repositories_top(count: Int): [Repository]
+
+  # This endpoint let user see the recent operation logs of the projects which he is member of 
+  #
+  get_logs(username: String, repository: String, tag: String, operation: String, begin_timestamp: String, end_timestamp: String, page: Int, page_size: Int): [AccessLog]
+
+  # This endpoint let user list filters jobs according to the policy and
+  # repository. (if start_time and end_time are both null, list jobs of last 10 days)
+  #
+  get_jobs_replication(policy_id: Int!, num: Int, end_time: String, start_time: String, repository: String, status: String, page: Int, page_size: Int): [JobStatus]
+
+  # This endpoint let user search job logs filtered by specific ID.
+  #
+  get_jobs_replication_id_log(id: String!): get_jobs_replication_id_log
+
+  # This endpoint let user get scan job logs filtered by specific ID.
+  #
+  get_jobs_scan_id_log(id: String!): get_jobs_scan_id_log
+
+  # This endpoint let user list filters policies by name and project_id, if name
+  # and project_id are nil, list returns all policies
+  #
+  get_policies_replication(name: String, project_id: String, page: Int, page_size: Int): [RepPolicy]
+
+  # This endpoint let user search replication policy by specific ID.
+  #
+  get_policies_replication_id(id: String!): RepPolicy
+
+  # This endpoint let user list labels by name, scope and project_id
+  #
+  get_labels(name: String, scope: String!, project_id: String, page: Int, page_size: Int): [Label]
+
+  # This endpoint let user get the label by specific ID.
+  #
+  get_labels_id(id: String!): Label
+
+  # This endpoint let user get the resources that the label is referenced by. Only
+  # the replication policies are returned for now.
+  #
+  get_labels_id_resources(id: String!): Resource
+
+  # This endpoint let user list filters targets by name, if name is nil, list returns all targets.
+  #
+  get_targets(name: String): [RepTarget]
+
+  # This endpoint is for get specific replication's target.
+  get_targets_id(id: String!): RepTarget
+
+  # This endpoint list policies filter with specific replication's target ID.
+  #
+  get_targets_id_policies_(id: String!): [RepPolicy]
+
+  # This API is for retrieving general system info, this can be called by anonymous request.
+  #
+  get_systeminfo: GeneralInfo
+
+  # This endpoint is for retrieving system volume info that only provides for admin user.
+  #
+  get_systeminfo_volumes: SystemInfo
+
+  # This endpoint is for downloading a default root certificate that only provides for admin user under OVA deployment.
+  #
+  get_systeminfo_getcert: get_systeminfo_getcert
+
+  # This endpoint searches the available ldap groups based on related
+  # configuration parameters. support to search by groupname or groupdn.
+  #
+  get_ldap_groups_search(groupname: String, groupdn: String): [UserGroup]
+
+  # This endpoint searches the available ldap users based on related configuration
+  # parameters. Support searched by input ladp configuration, load configuration
+  # from the system and specific filter.
+  #
+  get_ldap_users_search(username: String): [LdapUsers]
+
+  # Get all user groups information
+  get_usergroups: [UserGroup]
+
+  # Get user group information
+  get_usergroups_group_id(group_id: String!): UserGroup
+
+  # This endpoint let user get latest ten gc results.
+  get_system_gc: [GCResult]
+
+  # This endpoint let user get gc status filtered by specific ID.
+  get_system_gc_id(id: String!): [GCResult]
+
+  # This endpoint let user get gc job logs filtered by specific ID.
+  get_system_gc_id_log(id: String!): get_system_gc_id_log
+
+  # This endpoint is for get schedule of gc job.
+  get_system_gc_schedule: [GCSchedule]
+
+  # This endpoint is for retrieving system configurations that only provides for admin user.
+  #
+  get_configurations: ConfigurationsResponse
+
+  # Check the health of chart repository service.
+  get_chartrepo_health: get_chartrepo_health
+
+  # Get all the charts under the specified project
+  get_chartrepo_repo_charts(repo: String!): get_chartrepo_repo_charts
+
+  # Get all the versions of the specified chart
+  get_chartrepo_repo_charts_name(repo: String!, name: String!): get_chartrepo_repo_charts_name
+
+  # Get the specified chart version
+  get_chartrepo_repo_charts_name_version(repo: String!, name: String!, version: String!): get_chartrepo_repo_charts_name_version
+}
+
+type RepFilter {
+  # The replication policy filter kind. The valid values are project, repository and tag.
+  kind: String
+
+  # The value of replication policy filter. When creating repository and tag
+  # filter, filling it with the pattern as string. When creating label filter,
+  # filling it with label ID as integer.
+  value: String
+
+  # Depraceted, use value instead. The replication policy filter pattern.
+  pattern: String
+
+  # This map object is the replication policy filter metadata.
+  metadata: RepFilter_metadata
+}
+
+# This map object is the replication policy filter metadata.
+type RepFilter_metadata {
+  # default field
+  empty: String
+}
+
+# This map object is the replication policy filter metadata.
+input RepFilter_metadataInput {
+  # default field
+  empty: String
+}
+
+input RepFilterInput {
+  # The replication policy filter kind. The valid values are project, repository and tag.
+  kind: String
+
+  # The value of replication policy filter. When creating repository and tag
+  # filter, filling it with the pattern as string. When creating label filter,
+  # filling it with label ID as integer.
+  value: String
+
+  # Depraceted, use value instead. The replication policy filter pattern.
+  pattern: String
+
+  # This map object is the replication policy filter metadata.
+  metadata: RepFilter_metadataInput
+}
+
+input ReplicationInput {
+  # The ID of replication policy
+  policy_id: Int
+}
+
+type RepoSignature {
+  # The tag of image.
+  tag: String
+
+  # The JSON object of the hash of the image.
+  hashes: RepoSignature_hashes
+}
+
+# The JSON object of the hash of the image.
+type RepoSignature_hashes {
+  # default field
+  empty: String
+}
+
+type Repository {
+  # The ID of repository.
+  id: Int
+
+  # The name of repository.
+  name: String
+
+  # The project ID of repository.
+  project_id: Int
+
+  # The description of repository.
+  description: String
+
+  # The pull count of repository.
+  pull_count: Int
+
+  # The star count of repository.
+  star_count: Int
+
+  # The tags count of repository.
+  tags_count: Int
+
+  # The label list.
+  labels: [Label]
+
+  # The creation time of repository.
+  creation_time: String
+
+  # The update time of repository.
+  update_time: String
+}
+
+input RepositoryDescriptionInput {
+  # The description of the repository.
+  description: String
+}
+
+type RepPolicy {
+  # The policy ID.
+  id: String
+
+  # The policy name.
+  name: String
+
+  # The description of the policy.
+  description: String
+
+  # The project list that the policy applys to.
+  projects: [Project]
+
+  # The target list.
+  targets: [RepTarget]
+  trigger: RepTrigger
+
+  # The replication policy filter array.
+  filters: [RepFilter]
+
+  # Whether to replicate the existing images now.
+  replicate_existing_image_now: Boolean
+
+  # Whether to replicate the deletion operation.
+  replicate_deletion: Boolean
+
+  # The create time of the policy.
+  creation_time: String
+
+  # The update time of the policy.
+  update_time: String
+
+  # The error job count number for the policy.
+  error_job_count: Int
+}
+
+input RepPolicyInput {
+  # The policy ID.
+  id: String
+
+  # The policy name.
+  name: String
+
+  # The description of the policy.
+  description: String
+
+  # The project list that the policy applys to.
+  projects: [ProjectInput]
+
+  # The target list.
+  targets: [RepTargetInput]
+  trigger: RepTriggerInput
+
+  # The replication policy filter array.
+  filters: [RepFilterInput]
+
+  # Whether to replicate the existing images now.
+  replicate_existing_image_now: Boolean
+
+  # Whether to replicate the deletion operation.
+  replicate_deletion: Boolean
+
+  # The create time of the policy.
+  creation_time: String
+
+  # The update time of the policy.
+  update_time: String
+
+  # The error job count number for the policy.
+  error_job_count: Int
+}
+
+type RepTarget {
+  # The target ID.
+  id: String
+
+  # The target address URL string.
+  endpoint: String
+
+  # The target name.
+  name: String
+
+  # The target server username.
+  username: String
+
+  # The target server password.
+  password: String
+
+  # Reserved field.
+  type: Int
+
+  # Whether or not the certificate will be verified when Harbor tries to access the server.
+  insecure: Boolean
+
+  # The create time of the policy.
+  creation_time: String
+
+  # The update time of the policy.
+  update_time: String
+}
+
+input RepTargetInput {
+  # The target ID.
+  id: String
+
+  # The target address URL string.
+  endpoint: String
+
+  # The target name.
+  name: String
+
+  # The target server username.
+  username: String
+
+  # The target server password.
+  password: String
+
+  # Reserved field.
+  type: Int
+
+  # Whether or not the certificate will be verified when Harbor tries to access the server.
+  insecure: Boolean
+
+  # The create time of the policy.
+  creation_time: String
+
+  # The update time of the policy.
+  update_time: String
+}
+
+input RepTargetPostInput {
+  # The target address URL string.
+  endpoint: String
+
+  # The target name.
+  name: String
+
+  # The target server username.
+  username: String
+
+  # The target server password.
+  password: String
+
+  # Whether or not the certificate will be verified when Harbor tries to access the server.
+  insecure: Boolean
+}
+
+type RepTrigger {
+  # The replication policy trigger kind. The valid values are manual, immediate and schedule.
+  kind: String
+  schedule_param: ScheduleParam
+}
+
+input RepTriggerInput {
+  # The replication policy trigger kind. The valid values are manual, immediate and schedule.
+  kind: String
+  schedule_param: ScheduleParamInput
+}
+
+type Resource {
+  # The replication policy list.
+  replication_policies: [RepPolicy]
+}
+
+input RoleRequestInput {
+  # The role id 1 for projectAdmin, 2 for developer, 3 for guest
+  role_id: Int
+}
+
+type ScheduleParam {
+  # The schedule type. The valid values are daily and weekly.
+  type: String
+
+  # Optional, only used when the type is weedly. The valid values are 1-7.
+  weekday: Int
+
+  # The time offset with the UTC 00:00 in seconds.
+  offtime: String
+}
+
+input ScheduleParamInput {
+  # The schedule type. The valid values are daily and weekly.
+  type: String
+
+  # Optional, only used when the type is weedly. The valid values are 1-7.
+  weekday: Int
+
+  # The time offset with the UTC 00:00 in seconds.
+  offtime: String
+}
+
+type Search {
+  # Search results of the projects that matched the filter keywords.
+  projects: [Project]
+
+  # Search results of the repositories that matched the filter keywords.
+  repositories: [SearchRepository]
+}
+
+type SearchRepository {
+  # The ID of the project that the repository belongs to
+  project_id: Int
+
+  # The name of the project that the repository belongs to
+  project_name: String
+
+  # The flag to indicate the publicity of the project that the repository belongs to (1 is public, 0 is not)
+  project_public: Boolean
+
+  # The name of the repository
+  repository_name: String
+
+  # The count how many times the repository is pulled
+  pull_count: Int
+
+  # The count of tags in the repository
+  tags_count: Int
+}
+
+type StatisticMap {
+  # The count of the private projects which the user is a member of.
+  private_project_count: Int
+
+  # The count of the private repositories belonging to the projects which the user is a member of.
+  private_repo_count: Int
+
+  # The count of the public projects.
+  public_project_count: Int
+
+  # The count of the public repositories belonging to the public projects which the user is a member of.
+  public_repo_count: Int
+
+  # The count of the total projects, only be seen when the is admin.
+  total_project_count: Int
+
+  # The count of the total repositories, only be seen when the user is admin.
+  total_repo_count: Int
+}
+
+type Storage {
+  # Total volume size.
+  total: String
+
+  # Free volume size.
+  free: String
+}
+
+type StringConfigItem {
+  # The string value of current config item
+  value: String
+
+  # The configure item can be updated or not
+  editable: Boolean
+}
+
+type SystemInfo {
+  # The storage of system.
+  storage: [Storage]
+}
+
+type Tags {
+  # The repository's used tag.
+  tag: String
+}
+
+input UpdateJobsInput {
+  # The ID of replication policy
+  policy_id: Int
+
+  # The status of jobs. The only valid value is stop for now.
+  status: String
+}
+
+type User {
+  # The ID of the user.
+  user_id: Int
+  username: String
+  email: String
+  password: String
+  realname: String
+  comment: String
+  deleted: Boolean
+  role_name: String
+  role_id: Int
+  has_admin_role: Int
+  reset_uuid: String
+  Salt: String
+  creation_time: String
+  update_time: String
+}
+
+input UserEntityInput {
+  # The ID of the user.
+  user_id: Int
+
+  # The name of the user.
+  username: String
+}
+
+type UserGroup {
+  # The ID of the user group
+  id: Int
+
+  # The name of the user group
+  group_name: String
+
+  # The group type, 1 for LDAP group.
+  group_type: Int
+
+  # The DN of the LDAP group if group type is 1 (LDAP group).
+  ldap_group_dn: String
+}
+
+input UserGroupInput {
+  # The ID of the user group
+  id: Int
+
+  # The name of the user group
+  group_name: String
+
+  # The group type, 1 for LDAP group.
+  group_type: Int
+
+  # The DN of the LDAP group if group type is 1 (LDAP group).
+  ldap_group_dn: String
+}
+
+input UserInput {
+  # The ID of the user.
+  user_id: Int
+  username: String
+  email: String
+  password: String
+  realname: String
+  comment: String
+  deleted: Boolean
+  role_name: String
+  role_id: Int
+  has_admin_role: Int
+  reset_uuid: String
+  Salt: String
+  creation_time: String
+  update_time: String
+}
+
+input UserProfileInput {
+  # The new email.
+  email: String
+
+  # The new realname.
+  realname: String
+
+  # The new comment.
+  comment: String
+}
+
+type VulnerabilityItem {
+  # ID of the vulnerability, normally it is the CVE ID
+  id: String
+
+  # 1-Negligible, 2-Unknown, 3-Low, 4-Medium, 5-High
+  severity: Int
+
+  # The packge that introduces the vulnerability.
+  package: String
+
+  # The version of the package.
+  version: String
+
+  # The description of the vulnerability.
+  description: String
+
+  # The version which the vulnerability is fixed, this is an optional property.
+  fixedVersion: String
+}
+
+type VulnNamespaceTimestamp {
+  # The namespace of the Vulnerability
+  namespace: String
+
+  # The UTC timestamp in miliseconds of last successful update for vulnerability data.
+  last_update: Int
+}
+
